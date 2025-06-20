@@ -1,0 +1,25 @@
+{
+  "name": "api-tarefas",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "npx nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FS43-Aldeota/api-tarefas.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/FS43-Aldeota/api-tarefas/issues"
+  },
+  "homepage": "https://github.com/FS43-Aldeota/api-tarefas#readme",
+  "description": "",
+  "dependencies": {
+    "express": "^5.1.0",
+    "mysql2": "^3.14.1",
+    "nodemon": "^3.1.10"
+  }
+}
