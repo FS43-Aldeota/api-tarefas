@@ -33,6 +33,16 @@ app.get("/boas-vindas/:nome", (req, res) => {
     res.send(`Seja bem-vindo ${req.params.nome}`);
 });
 
+//Busca usuarios
+app.get("/usuarios", async (req, res) => {
+    res.send(await executarSQL("SELECT * FROM usuarios;"));
+});
+
+//Busca um usuario
+app.get("/usuarios/:id", async (req, res) => {
+    res.send(await executarSQL(`SELECT * FROM usuarios WHERE id = ${req.params.id};`));
+});
+
 //Cria o usuario
 app.post("/usuarios", async (req, res) => {
     const request = await executarSQL(`INSERT INTO usuarios (nome, email, senha) VALUES ('${req.body.nome}', '${req.body.email}', '${req.body.senha}')`);
@@ -43,6 +53,60 @@ app.post("/usuarios", async (req, res) => {
     }
 });
 
+//Edita um usuario
+app.put("/usuarios/:id", async (req, res) => {
+    const request = await executarSQL(`UPDATE usuarios SET nome = '${req.body.nome}', email = '${req.body.email}', senha = '${req.body.senha}' WHERE id = ${req.params.id}; `);
+    if(request.affectedRows > 0){
+        res.send("Usuário atualizado com sucesso!");
+    }else{
+        res.send("Ocorreu um erro");
+    }
+});
+
+//Deleta um usuario
+app.delete("/usuarios/:id", async (req, res) => {
+    const request = await executarSQL(`DELETE FROM usuarios WHERE id = ${req.params.id};`);
+    if(request.affectedRows > 0){
+        res.send("Usuário deletado com sucesso!");
+    }else{
+        res.send("Ocorreu um erro");
+    }
+});
+
+//Busca tarefas
+app.get("/tarefas", async (req, res) => {
+    res.send(await executarSQL("SELECT * FROM tarefas;"));
+});
+
+//Cria tarefa
+app.post("/tarefas", async (req, res) => {
+    const request = await executarSQL(`INSERT INTO tarefas (titulo, descricao, usuario_id) VALUES ('${req.body.titulo}', '${req.body.descricao}', '${req.body.usuario_id}')`);
+    if(request.affectedRows > 0){
+        res.send("Tarefa cadastrada com sucesso!");
+    }else{
+        res.send("Ocorreu um erro");
+    }
+});
+
+//Edita um usuario
+app.put("/tarefas/:id", async (req, res) => {
+    const request = await executarSQL(`UPDATE tarefas SET titulo = '${req.body.titulo}', descricao = '${req.body.descricao}', usuario_id = '${req.body.usuario_id}' WHERE id = ${req.params.id}; `);
+    if(request.affectedRows > 0){
+        res.send("Tarefa atualizada com sucesso!");
+    }else{
+        res.send("Ocorreu um erro");
+    }
+});
+
+//Deleta um usuario
+app.delete("/tarefas/:id", async (req, res) => {
+    const request = await executarSQL(`DELETE FROM tarefas WHERE id = ${req.params.id};`);
+    if(request.affectedRows > 0){
+        res.send("Tarefa deletada com sucesso!");
+    }else{
+        res.send("Ocorreu um erro");
+    }
+});
 
 app.listen(port, () => {
     console.log(`Servidor de pé: http://localhost:${port}`);
