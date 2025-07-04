@@ -1,5 +1,6 @@
 import express from "express";
 import mysql from "mysql2/promise";
+import cors from "cors";
 
 const app = express();
 const port = 8000;
@@ -19,6 +20,7 @@ async function executarSQL(comandoSQL){
     return result;
 }
 
+app.use(cors());
 app.use(express.json());
 
 app.get("/", (request, response) => {
@@ -92,6 +94,10 @@ app.delete("/usuarios/:id", async (req, res) => {
 //Busca tarefas
 app.get("/tarefas", async (req, res) => {
     res.send(await executarSQL("SELECT * FROM tarefas;"));
+});
+
+app.get("/tarefas-do-usuario/:usuario_id", async (req, res) => {
+    res.send(await executarSQL(`SELECT * FROM tarefas WHERE usuario_id = ${req.params.usuario_id};`));
 });
 
 //Cria tarefa
