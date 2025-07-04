@@ -33,6 +33,22 @@ app.get("/boas-vindas/:nome", (req, res) => {
     res.send(`Seja bem-vindo ${req.params.nome}`);
 });
 
+
+//Fazer login
+app.post("/login", async (req, res) => {
+    let busca = await executarSQL(`SELECT * FROM usuarios WHERE email = '${req.body.email}';`);
+    if(busca.length > 0){
+        let usuario = busca[0];
+        if(usuario.senha == req.body.senha){
+            delete usuario.senha;
+            res.send({usuario});
+            return;
+        }
+        res.send("Email ou senha inválidos");
+    }
+    res.send("Email ou senha inválidos");
+});
+
 //Busca usuarios
 app.get("/usuarios", async (req, res) => {
     res.send(await executarSQL("SELECT * FROM usuarios;"));
@@ -88,7 +104,7 @@ app.post("/tarefas", async (req, res) => {
     }
 });
 
-//Edita um usuario
+//Edita um tarefa
 app.put("/tarefas/:id", async (req, res) => {
     const request = await executarSQL(`UPDATE tarefas SET titulo = '${req.body.titulo}', descricao = '${req.body.descricao}', usuario_id = '${req.body.usuario_id}' WHERE id = ${req.params.id}; `);
     if(request.affectedRows > 0){
@@ -98,7 +114,7 @@ app.put("/tarefas/:id", async (req, res) => {
     }
 });
 
-//Deleta um usuario
+//Deleta um tarefa
 app.delete("/tarefas/:id", async (req, res) => {
     const request = await executarSQL(`DELETE FROM tarefas WHERE id = ${req.params.id};`);
     if(request.affectedRows > 0){
