@@ -96,6 +96,7 @@ app.get("/tarefas", async (req, res) => {
     res.send(await executarSQL("SELECT * FROM tarefas;"));
 });
 
+//Buscar as tarefas de um usuario
 app.get("/tarefas-do-usuario/:usuario_id", async (req, res) => {
     res.send(await executarSQL(`SELECT * FROM tarefas WHERE usuario_id = ${req.params.usuario_id};`));
 });
@@ -104,9 +105,9 @@ app.get("/tarefas-do-usuario/:usuario_id", async (req, res) => {
 app.post("/tarefas", async (req, res) => {
     const request = await executarSQL(`INSERT INTO tarefas (titulo, descricao, usuario_id) VALUES ('${req.body.titulo}', '${req.body.descricao}', '${req.body.usuario_id}')`);
     if(request.affectedRows > 0){
-        res.send("Tarefa cadastrada com sucesso!");
+        res.json("Tarefa cadastrada com sucesso!");
     }else{
-        res.send("Ocorreu um erro");
+        res.json("Ocorreu um erro");
     }
 });
 
@@ -124,9 +125,9 @@ app.put("/tarefas/:id", async (req, res) => {
 app.delete("/tarefas/:id", async (req, res) => {
     const request = await executarSQL(`DELETE FROM tarefas WHERE id = ${req.params.id};`);
     if(request.affectedRows > 0){
-        res.send("Tarefa deletada com sucesso!");
+        res.json("Tarefa deletada com sucesso!");
     }else{
-        res.send("Ocorreu um erro");
+        res.json    ("Ocorreu um erro");
     }
 });
 
